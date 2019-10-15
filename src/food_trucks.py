@@ -109,6 +109,6 @@ class FoodTrucks:
 
 
 if __name__ == '__main__':
-        ft = FoodTrucks()
-        print(tabulate(ft.suggest()))
+    ft = FoodTrucks()
+    print(tabulate(ft.suggest()))
 
