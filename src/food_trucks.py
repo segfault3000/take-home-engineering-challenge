@@ -44,6 +44,7 @@ class FoodTrucks:
         self.geodata = self.geodata.query('not x.isnull() &'
                                           'not expirationdate.isnull() &'
                                           'facilitytype == "Truck" &'
+                                          'status == "APPROVED" &'
                                           f'expirationdate > "{self.updated_at:YYYY-MMM-DD}"')
 
     def suggest(self, location: str = None, count: int = 20) -> pd.DataFrame:
