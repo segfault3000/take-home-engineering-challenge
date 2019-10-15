@@ -5,6 +5,7 @@ import geopandas
 
 import pandas as pd
 import shapely.geometry as geom
+from tabulate import tabulate
 
 
 class FoodTrucks:
@@ -42,6 +43,7 @@ class FoodTrucks:
         # so we must filter it or we will provide innacurate results.
         self.geodata = self.geodata.query('not x.isnull() &'
                                           'not expirationdate.isnull() &'
+                                          'facilitytype == "Truck" &'
                                           f'expirationdate > "{self.updated_at:YYYY-MMM-DD}"')
 
     def suggest(self, location: str = None, count: int = 20) -> pd.DataFrame:
@@ -79,8 +81,7 @@ class FoodTrucks:
         return self.geodata.sort_values('distance_to_us', ascending=True).groupby('applicant').head(count)
 
 
-
 if __name__ == '__main__':
         ft = FoodTrucks()
-        print(ft.suggest())
+        print(tabulate(ft.suggest()))
 
