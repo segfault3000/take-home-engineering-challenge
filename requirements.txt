@@ -1,2 +1,7 @@
-requests
 arrow
+requests
+click
+python-rapidjson
+pandas
+geopandas
+geocoder
