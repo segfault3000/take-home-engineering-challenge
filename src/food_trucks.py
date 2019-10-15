@@ -79,9 +79,33 @@ class FoodTrucks:
         self.loc = geom.Point(loc.latlng)
         self.geodata['distance_to_us'] = self.geodata.distance(self.loc)
 
-        ret = self.geodata.sort_values('distance_to_us', ascending=True).head(count)
-        ret = ret[['applicant', 'fooditems', 'locationdescription']]
-        return ret
+        filtset = self.geodata.sort_values('distance_to_us', ascending=True)
+        filtset = filtset[['applicant', 'fooditems', 'locationdescription']]
+
+        # we're going to unique the set and generate a new data frame to return
+        # mostly due to time considerations as doing what's required in
+        # pandas it likely involved. optimally we'd preserve the geo data
+        # for use by non-cli consumers.
+        total = 0
+        ret = {'name': [], 'description': [], 'location': []}
+        for trow in filtset.iterrows():
+            # NB. Pandas rows, the index is zero, the values tuple is 1 or
+            # more.
+            if total >= count:
+                break
+
+            truck_name = trow[1][0]
+            if truck_name in ret['name']:
+                continue
+
+            ret['name'].append(truck_name)
+            ret['description'].append(trow[1][1])
+            ret['location'].append(trow[1][2])
+
+            total += 1
+
+        retframe = pd.DataFrame(ret)
+        return retframe
 
 
 if __name__ == '__main__':
