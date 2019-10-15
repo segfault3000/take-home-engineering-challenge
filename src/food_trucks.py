@@ -79,7 +79,9 @@ class FoodTrucks:
         self.loc = geom.Point(loc.latlng)
         self.geodata['distance_to_us'] = self.geodata.distance(self.loc)
 
-        return self.geodata.sort_values('distance_to_us', ascending=True).groupby('applicant').head(count)
+        ret = self.geodata.sort_values('distance_to_us', ascending=True).head(count)
+        ret = ret[['applicant', 'fooditems', 'locationdescription']]
+        return ret
 
 
 if __name__ == '__main__':
