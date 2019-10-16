@@ -5,9 +5,12 @@ from food_trucks import FoodTrucks
 
 @click.command()
 @click.option('--count', '-c', default=20)
-def suggest(count):
+@click.option('--location', '-l', default=None)
+def suggest(count, location):
     ft = FoodTrucks()
-    print(tabulate(ft.suggest(count)))
+    sugg = ft.suggest(location, count)
+
+    print(tabulate(sugg, headers="keys", showindex="never"))
 
 if __name__ == '__main__':
     suggest()
